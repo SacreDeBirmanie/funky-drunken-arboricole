@@ -47,6 +47,14 @@ arbrecubes::arbrecubes(std::string nomfic)
 vector<cube> arbrecubes::dessus(const cube & CC) const
     { 
         // à compléter
+        vector<cube> cubes; 
+        _noeud * courant = CC.fils ;
+        
+        while(courant !=NULL){
+			cubes.push_back(courant->bloc);
+			courant = courant->frere;
+		}
+        return cubes;
     }
 
       /**
@@ -57,6 +65,8 @@ vector<cube> arbrecubes::dessus(const cube & CC) const
 const cube soutien(const cube & CC) const
     { 
         // à compléter
+        return CC.pere->bloc;
+        
     }
 
       /**
@@ -70,6 +80,25 @@ const cube soutien(const cube & CC) const
 void arbrecubes::ajouter(const cube & CC)
     { 
         // à compléter
+        if(_racine == NULL){
+			_noeud * newneuneu;
+			
+			newneuneu->bloc = CC;
+			newneuneu->fils = NULL;
+			newneuneu->pere = NULL;
+			
+			_racine =  newneuneu;
+		}
+		else{
+			//regarder si le cube n'est pas déjà present
+			//parcourir les fils tant que CC.x < filsCourant.x
+			//puis parcourir tant que CC.y < filsCourant.y
+			
+			//vérifier que CC a la place de s'insérer
+				/------->si oui, l'inserer !
+				/------->si non
+		
+		}
     }
 
 	
