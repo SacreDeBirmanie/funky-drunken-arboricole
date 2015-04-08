@@ -35,6 +35,26 @@ class point
        */
 		point(int x,int y)
 		     {this->x=x;this->y=y;}
+
+      bool operator<(const point & p1, const point & p2){
+            if(p1.x == p2.x)
+                  return p1.y<p2.y;
+            else
+                  return p1.x<p2.x;
+      }
+
+
+      bool operator>(const point & p1, const point & p2){
+         if(p1.x == p2.x)
+                  return p1.y>p2.y;
+            else
+                  return p1.x>p2.x;
+      }
+
+
+      bool operator==(const point & p1, const point & p2){
+         return (p1.x == p2.x && p1.y == p2.y);
+      }
 };
 
 #endif // __point_HPP__

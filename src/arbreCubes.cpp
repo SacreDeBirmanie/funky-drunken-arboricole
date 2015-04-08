@@ -47,8 +47,33 @@ arbrecubes::arbrecubes(std::string nomfic)
 vector<cube> arbrecubes::dessus(const cube & CC) const
     { 
         // à compléter
+        // 
+        // etape 1 : retrouver le cube
+        
+        _noeud * courant = _racine;
+        bool trouve = false;
+        while(!trouve){
+
+          if(courant->cube == CC)
+            trouve = true;
+
+          else{
+            point limiteSupG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
+            point limiteInfG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
+            point limiteSupD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
+            point limiteInfD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
+              if(CC.centre()>limiteSupG && CC.centre()>limiteInfG && CC.centre()>limiteSupD && CC.centre()>limiteInfD)
+                courant = courant->fils;
+              else
+                courant = courant->frere;
+            }
+
+        }
+
+
+        //etape 2 : créer le vecteur
         vector<cube> cubes; 
-        _noeud * courant = CC.fils ;
+        courant = courant->fils ;
         
         while(courant !=NULL){
 			cubes.push_back(courant->bloc);
@@ -65,7 +90,34 @@ vector<cube> arbrecubes::dessus(const cube & CC) const
 const cube soutien(const cube & CC) const
     { 
         // à compléter
-        return CC.pere->bloc;
+        if(_racine->cube == CC)
+          return CC;
+        else{
+
+          _noeud * pere = _racine;
+          _noeud * courant = _racine->fils;
+          bool trouve = false;
+          while(!trouve){
+
+            if(courant->cube == CC)
+              trouve = true;
+
+            else{
+              int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
+              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
+              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX){
+                  pere = courant
+                  courant = courant->fils;
+                }
+                else
+                  courant = courant->frere;
+              }
+
+          }
+          return pere->cube;
+      }
         
     }
 
@@ -77,11 +129,10 @@ const cube soutien(const cube & CC) const
        *    ( dans l'ordre ) 
        * et prend comme fils tous les cubes qu'il peut supporter
        */	
-void arbrecubes::ajouter(const cube & CC)
-    { 
+void arbrecubes::ajouter(const cube & CC){ 
         // à compléter
+        _noeud * newneuneu;
         if(_racine == NULL){
-			_noeud * newneuneu;
 			
 			newneuneu->bloc = CC;
 			newneuneu->fils = NULL;
@@ -90,16 +141,41 @@ void arbrecubes::ajouter(const cube & CC)
 			_racine =  newneuneu;
 		}
 		else{
-			//regarder si le cube n'est pas déjà present
-			//parcourir les fils tant que CC.x < filsCourant.x
-			//puis parcourir tant que CC.y < filsCourant.y
-			
-			//vérifier que CC a la place de s'insérer
-				/------->si oui, l'inserer !
-				/------->si non
-		
+      bool trouve = false;
+      bool sortir = false;
+
+      _noeud * courant = _racine->fils;
+      while(courant != NULL && trouve == false && sortir == false){
+        if(courant->cube.cote()<CC.cote()){
+          courant = courant->frere;
+        }
+        else{
+          point limiteSupG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
+          point limiteInfG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
+          point limiteSupD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
+          point limiteInfD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
+
+          //fonctionne puisque les cubes sont censé pouvoir supporter la contrainte
+          if(CC.centre()>limiteSupG && CC.centre()>limiteInfG && CC.centre()>limiteSupD && CC.centre()>limiteInfD){
+              courant->ajouter(CC);
+              trouve = true;
+          }
+          else if(CC.centre()<courant->cube.centre())//REVOIR cette sortie !!!!!!!
+            sortir = true;
+          else
+            courant = courant->frere;
+
+        }
+      }
+
+      if(trouve == false){
+        newneuneu->bloc = CC;
+        newneuneu->fils = _racine->fils; // TOUS les fils ????????????????
+        newneuneu->pere = _racine;
+      }
+
 		}
-    }
+}
 
 	
       /**

@@ -44,6 +44,10 @@ class cube
        * @return la longueur d'une arête 
        */
 		      int cote() const {return 2*demiCote+1;}
+
+                  bool operator==(const point & c1, const point & c2){
+                        return ((c1.milieu == c2.milieu) && (c1.demiCote == c2.demiCote));
+      }
 };
 
 #endif // __cube_HPP__
