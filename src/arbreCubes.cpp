@@ -58,11 +58,11 @@ vector<cube> arbrecubes::dessus(const cube & CC) const
             trouve = true;
 
           else{
-            point limiteSupG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
-            point limiteInfG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
-            point limiteSupD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
-            point limiteInfD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
-              if(CC.centre()>limiteSupG && CC.centre()>limiteInfG && CC.centre()>limiteSupD && CC.centre()>limiteInfD)
+            int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
+              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
+              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX)
                 courant = courant->fils;
               else
                 courant = courant->frere;
@@ -150,13 +150,12 @@ void arbrecubes::ajouter(const cube & CC){
           courant = courant->frere;
         }
         else{
-          point limiteSupG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
-          point limiteInfG(courant->cube.centre().x - (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
-          point limiteSupD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y + (courant->cube.cote()-1)/2);
-          point limiteInfD(courant->cube.centre().x + (courant->cube.cote()-1)/2 , courant->cube.centre().y - (courant->cube.cote()-1)/2);
-
-          //fonctionne puisque les cubes sont censé pouvoir supporter la contrainte
-          if(CC.centre()>limiteSupG && CC.centre()>limiteInfG && CC.centre()>limiteSupD && CC.centre()>limiteInfD){
+          int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
+              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
+              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
+              
+                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX){
               courant->ajouter(CC);
               trouve = true;
           }
