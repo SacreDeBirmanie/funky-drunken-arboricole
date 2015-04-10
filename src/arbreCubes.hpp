@@ -91,6 +91,10 @@ class arbrecubes
        * @return une altitude entière (somme des cote() des cubes empilés sous M) 
        */	
 	int hauteur(const point & M) const;
+	
+	_noeud * recherche(const cube & CC) const;
+	
+	bool peutSupp(const cube & C1, const cube & C2 );
 };
 
 #endif // __arbrecubes_HPP__

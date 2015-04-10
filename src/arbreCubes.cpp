@@ -44,35 +44,18 @@ arbrecubes::arbrecubes(std::string nomfic)
        * @param CC un cube supposé présent dans l'arbre
        * @return un vecteur de cubes ayant tous CC comme père
        */	
-vector<cube> arbrecubes::dessus(const cube & CC) const
+std::vector<cube> arbrecubes::dessus(const cube & CC) const
     { 
         // à compléter
         // 
         // etape 1 : retrouver le cube
         
-        _noeud * courant = _racine;
-        bool trouve = false;
-        while(!trouve){
-
-          if(courant->cube == CC)
-            trouve = true;
-
-          else{
-            int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
-              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
-              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX)
-                courant = courant->fils;
-              else
-                courant = courant->frere;
-            }
-
-        }
+        
+		_noeud * courant = recherche(CC);
 
 
         //etape 2 : créer le vecteur
-        vector<cube> cubes; 
+        std::vector<cube> cubes; 
         courant = courant->fils ;
         
         while(courant !=NULL){
@@ -103,11 +86,7 @@ const cube soutien(const cube & CC) const
               trouve = true;
 
             else{
-              int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
-              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
-              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX){
+              if(peutSupp(courant->cube, CC)){
                   pere = courant
                   courant = courant->fils;
                 }
@@ -143,22 +122,21 @@ void arbrecubes::ajouter(const cube & CC){
 		else{
       bool trouve = false;
       bool sortir = false;
+      std::vector<_noeud *> tmp;
 
       _noeud * courant = _racine->fils;
       while(courant != NULL && trouve == false && sortir == false){
         if(courant->cube.cote()<CC.cote()){
-          courant = courant->frere;
+			if(peutSupp(CC , courant->cube))
+				tmp.push_back(courant);
+			
+			courant = courant->frere;
         }
         else{
-          int limiteSupY(courant->cube.centre().y + (courant->cube.cote()-1)/2);
-              int limiteInfY(courant->cube.centre().y - (courant->cube.cote()-1)/2);
-              int limiteSupX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-              int limiteInfX(courant->cube.centre().x + (courant->cube.cote()-1)/2);
-              
-                if(CC.centre().y<limiteSupY && CC.centre().y>limiteInfY && CC.centre().x<limiteSupX && CC.centre().x>limiteInfX){
-              courant->ajouter(CC);
-              trouve = true;
-          }
+			if(peutSupp(courant->cube, CC)){
+              courant = courant->fils;
+              std::vector<_noeud *> tmp;
+			}
           else if(CC.centre()<courant->cube.centre())//REVOIR cette sortie !!!!!!!
             sortir = true;
           else
@@ -169,7 +147,12 @@ void arbrecubes::ajouter(const cube & CC){
 
       if(trouve == false){
         newneuneu->bloc = CC;
-        newneuneu->fils = _racine->fils; // TOUS les fils ????????????????
+        
+    vector<int>::iterator it = pref.begin();
+	for(it;it != pref.end();++it){
+			newneuneu->fils = *it; // TOUS les fils ????????????????
+	}
+
         newneuneu->pere = _racine;
       }
 
@@ -209,3 +192,34 @@ int arbrecubes::hauteur(const point & M) const
     { 
         // à compléter
     }
+    
+	_noeud * arbrecubes::recherche(const cube & CC) const{
+		_noeud * courant = _racine;
+        bool trouve = false;
+        while(!trouve){
+
+          if(courant->cube == CC)
+            trouve = true;
+
+          else{
+           if(peutSupp(courant->cube, CC)
+				courant = courant->fils;
+			else
+				courant = courant->frere;
+            }
+            
+            return courant;
+		}
+	}
+	
+	bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ){
+		int limiteSupY(C1.centre().y + (C1.cote()-1)/2);
+        int limiteInfY(C1.centre().y - (C1.cote()-1)/2);
+        int limiteSupX(C1.centre().x + (C1.cote()-1)/2);
+        int limiteInfX(C1.centre().x + (C1.cote()-1)/2);
+        
+			if(C2.centre().y<limiteSupY && C2.centre().y>limiteInfY && C2.centre().x<limiteSupX && C2.centre().x>limiteInfX)
+				return true;
+			else
+				return false;
+	}
