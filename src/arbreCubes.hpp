@@ -95,6 +95,10 @@ class arbrecubes
 	_noeud * recherche(const cube & CC) const;
 	
 	bool peutSupp(const cube & C1, const cube & C2 );
+
+      void inserer(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud> fils);
+
+      void inserer(_noeud * pere, _noeud * fils);
 };
 
 #endif // __arbrecubes_HPP__
