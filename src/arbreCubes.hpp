@@ -91,14 +91,18 @@ class arbrecubes
        * @return une altitude entière (somme des cote() des cubes empilés sous M) 
        */	
 	int hauteur(const point & M) const;
+ 
 	
-	_noeud * recherche(const cube & CC, bool retourPere=false) const;
+	_noeud* recherche(const cube & CC, bool retourPere=false) const;
 	
-	bool peutSupp(const cube & C1, const cube & C2 );
+	bool peutSupp(const cube & C1, const cube & C2 ) const;
 
-      void inserer(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud> fils);
+      bool peutSupp(const cube & C1, const point & M ) const;
 
-      void inserer(_noeud * pere, _noeud * fils);
+      void insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud*> fils);
+
+      void insertion(_noeud * pere, _noeud * fils);
 };
 
+#include "arbreCubes.cpp"
 #endif // __arbrecubes_HPP__

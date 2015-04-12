@@ -45,8 +45,8 @@ class cube
        */
 		      int cote() const {return 2*demiCote+1;}
 
-                  bool operator==(const point & c1, const point & c2){
-                        return ((c1.milieu == c2.milieu) && (c1.demiCote == c2.demiCote));
+                  bool operator==(const cube & c2){
+                        return ((milieu == c2.milieu) && (demiCote == c2.demiCote));
       }
 };
 
