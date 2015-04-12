@@ -138,8 +138,7 @@
                     courant = courant->fils;
                     std::vector<_noeud *> tmp;//permet d'écraser l'ancien tmp pour repartir de zéro
                 }
-                    //SORTIE ??
-                }
+                    //ELSE IF De SORTIE ??
                 else
                     courant = courant->frere;
 
@@ -195,20 +194,47 @@
        * @param M un point (du plan)
        * @return un cube tel que M ne soit pas plus loin de centre() que cote()/2
        */	
-       const cube arbrecubes::cubede(const point & M) const 
-       { 
-        // à compléter
-       }
+        const cube arbrecubes::cubede(const point & M) const {
+          //a completer
+          //arbre supposé non vide
+          _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
+          _noeud * courant = _racine;
+          while(courant != NULL){
+            if(peutSupp(courant->cube , M)){
+              pereTempo = courant;
+              courant = courant->fils;
+            }
+            //ELSE IF DE SORTIE pour ne pas parcourir tous les freres??
+            else
+              courant = courant->frere;
+          }
+          return pereTempo->cube;
+        }
 
       /**
        * @brief Donne l'altitude de la face supérieure du cubede(M) 
        * @param M un point (du plan)
        * @return une altitude entière (somme des cote() des cubes empilés sous M) 
        */	    
-       int arbrecubes::hauteur(const point & M) const 
-       { 
+      int arbrecubes::hauteur(const point & M) const { 
         // à compléter
-       }
+        //arbre supposé non vide
+          _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
+          _noeud * courant = _racine;
+          int hauteur = 0;
+          while(courant != NULL){
+            if(peutSupp(courant->cube , M)){
+              int hauteur += courant->cube.cote();
+              pereTempo = courant;
+              courant = courant->fils;
+            }
+            //ELSE IF DE SORTIE pour ne pas parcourir tous les freres ??
+            else
+              courant = courant->frere;
+          }
+          return hauteur;
+        
+      }
 
        _noeud * arbrecubes::recherche(const cube & CC, bool retourPere=false) const{
         _noeud * pere = NULL;
@@ -241,6 +267,18 @@ bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ){
     int limiteInfX(C1.centre().x - (C1.cote()-1)/2);
 
     if(C2.centre().y<limiteSupY && C2.centre().y>limiteInfY && C2.centre().x<limiteSupX && C2.centre().x>limiteInfX)
+      return true;
+  else
+      return false;
+}
+
+bool arbrecubes::peutSupp(const cube & C1, const point & M ){
+    int limiteSupY(C1.centre().y + (C1.cote()-1)/2);
+    int limiteInfY(C1.centre().y - (C1.cote()-1)/2);
+    int limiteSupX(C1.centre().x + (C1.cote()-1)/2);
+    int limiteInfX(C1.centre().x - (C1.cote()-1)/2);
+
+    if(M.y<limiteSupY && M.y>limiteInfY && M.x<limiteSupX && M.x>limiteInfX)
       return true;
   else
       return false;
