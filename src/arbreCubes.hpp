@@ -92,7 +92,7 @@ class arbrecubes
        */	
 	int hauteur(const point & M) const;
 	
-	_noeud * recherche(const cube & CC) const;
+	_noeud * recherche(const cube & CC, bool retourPere=false) const;
 	
 	bool peutSupp(const cube & C1, const cube & C2 );
 

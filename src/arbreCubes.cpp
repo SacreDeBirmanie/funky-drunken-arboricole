@@ -73,7 +73,10 @@
        const cube soutien(const cube & CC) const
        { 
         // à compléter
-        if(_racine->cube == CC)
+          return recherche(CC,true);
+
+
+       /* if(_racine->cube == CC)
           return CC;
       else{
 
@@ -94,9 +97,9 @@
                 courant = courant->frere;
         }
 
-    }
-    return pere->cube;
-}
+       }
+        return pere->cube;
+      }*/
 
 }
 
@@ -160,7 +163,30 @@
        */		
        void arbrecubes::supprimer(const cube & CC)
        { 
-        // à compléter
+        noeud * pere = recherche(CC,true);
+        _noeud * frereGauche = NULL;
+        courant = pere->fils;
+
+        _noeud * tmp;
+
+        while(courant->cube != CC){//pas de condition null vu que le cube est présent
+          frereGauche = courant;
+          courant = courant->frere;
+        }
+
+        if(frereGauche == NULL)
+          pere->fils = courant->fere;
+        else
+          frereGauche->frere = courant->frere;
+
+        courant->frere = NULL; // opération non obligatoire
+        _noeud * filsCourant = courant->fils;
+        courant->fils = NULL;//opération non obligatoire
+
+        while(filsCourant !=NULL)
+          inserer(pere, filsCourant);
+
+        delete(courant);
        }
 
 
@@ -184,7 +210,8 @@
         // à compléter
        }
 
-       _noeud * arbrecubes::recherche(const cube & CC) const{
+       _noeud * arbrecubes::recherche(const cube & CC, bool retourPere=false) const{
+        _noeud * pere = NULL;
         _noeud * courant = _racine;
         bool trouve = false;
         while(!trouve){
@@ -193,13 +220,17 @@
             trouve = true;
 
         else{
-         if(peutSupp(courant->cube, CC)
+         if(peutSupp(courant->cube, CC){
+            pere = courant;
             courant = courant->fils;
             else
               courant = courant->frere;
       }
 
-      return courant;
+      if(retourPere)
+        return pere;
+      else
+        return courant;
   }
 }
 
@@ -207,7 +238,7 @@ bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ){
     int limiteSupY(C1.centre().y + (C1.cote()-1)/2);
     int limiteInfY(C1.centre().y - (C1.cote()-1)/2);
     int limiteSupX(C1.centre().x + (C1.cote()-1)/2);
-    int limiteInfX(C1.centre().x + (C1.cote()-1)/2);
+    int limiteInfX(C1.centre().x - (C1.cote()-1)/2);
 
     if(C2.centre().y<limiteSupY && C2.centre().y>limiteInfY && C2.centre().x<limiteSupX && C2.centre().x>limiteInfX)
       return true;
