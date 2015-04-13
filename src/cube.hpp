@@ -26,7 +26,9 @@ class cube
        */
 	          cube()
 	           { 
-	                   // à compléter
+	                point dede(0,0);
+	                milieu = dede;
+	                demiCote = 1; 
 	           };
       /**
        * @brief Constructeur 

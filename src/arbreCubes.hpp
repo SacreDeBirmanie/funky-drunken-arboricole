@@ -92,16 +92,47 @@ class arbrecubes
        */	
 	int hauteur(const point & M) const;
  
-	
+	private :
+	/**
+       * @brief recherche d'un pointeur sur _noeud contenant le cube supposé present dans l'arbre, la methode retourne soit son pere, soit directement le _noeud
+       * @param CC un cube supposé présent dans l'arbre 
+       * @param booleen retourPere, un booleen indiquand à la fonction si elle doit retourner le pere du _noeud* contenant le cube (true) ou directement le _noeud contenant CC (faux par defaut)
+       * @return un pointeur sur un noeud
+    */	
 	_noeud* recherche(const cube & CC, bool retourPere=false) const;
 	
+	/**
+       * @brief permet de savoir si un cube peut supporter un autre cube, en fonction de leur taille et de leur position
+       * @param C1, un cube quelconque
+       * @param C2, un deuxieme cube quelconque
+       * @return un booleen à vrai si C1 peut supporter C2, faux sinon 
+       */	
 	bool peutSupp(const cube & C1, const cube & C2 ) const;
-
-      bool peutSupp(const cube & C1, const point & M ) const;
-
-      void insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud*> fils);
-
-      void insertion(_noeud * pere, _noeud * fils);
+	
+	/**
+       * @brief permet de savoir si un cube peut supporter un point, en fonction de leur position
+       * @param C1, un cube quelconque
+       * @param M, un point quelconque
+       * @return un booleen à vrai si C1 peut supporter le point, faux sinon 
+       */		
+    bool peutSupp(const cube & C1, const point & M ) const;
+	
+	/**
+       * @brief insere une liste de vector de _noeud (supposé preent dans l'arbre), les supprime de leur ancien pere, et les ajoutes fils du nouveau pere 
+       * @param ancienPere, un pointeur sur un noeud
+       * @param nouveauPere, un pointeur sur un noeud
+       * @param vecteur contenant une liste de noeud *
+       * @pre le vecteur doit être trié dans l'ordre des x, y
+       * @pre tous les noeuds du vecteur doivent être un fils de l'ancien Pere
+       */	
+    void insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud*> fils);
+	
+	/**
+       * @brief insere un noeud comme fils d'un autre noeud (ne supprime pas l'ancien Pere si jamais le noeud était déjà present) 
+       * @param pere, un pointeur sur un noeud
+       * @param fils, un pointeur sur un noeud 
+       */	
+    void insertion(_noeud * pere, _noeud * fils);
 };
 
 #include "arbreCubes.cpp"

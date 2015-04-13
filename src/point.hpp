@@ -17,10 +17,10 @@
  */
 class point
 {  public:
-      					// attributs : abscisse et ordonnée
+      	// attributs : abscisse et ordonnée
       	// ces attributs sont publics pour simplifier l'utilisation de la classe
 	    int x,y;
-     					 // méthodes
+     	// méthodes
       /**
        * @brief Constructeur par défaut : l'origine du repère
        * @param n Le nom du produit
