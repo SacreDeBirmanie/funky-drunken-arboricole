@@ -35,26 +35,39 @@ class point
        */
 		point(int x,int y)
 		     {this->x=x;this->y=y;}
-
-      bool operator<(const point & p2) const{
+		
+		/**
+		 * @brief redéfinition de l'operator inferieur en fonction de la valeur de x, ou de la valeur de y si les x des deux points sont égaux
+		 * @param point p2, le point qui sera comparé à this
+		 * @return un booléen vraie si les coordonnées du point this est inférieur aux coordonnées du point entré en paramètre
+		*/
+		bool operator<(const point & p2) const{
             if(x == p2.x)
                   return y<p2.y;
             else
                   return x<p2.x;
-      }
+		}
 
-
-      bool operator>( const point & p2) const{
-         if(x == p2.x)
-                  return y>p2.y;
+		/**
+		 * @brief redéfinition de l'operator superieur en fonction de la valeur de x, ou de la valeur de y si les x des deux points sont égaux
+		 * @param point p2, le point qui sera comparé à this
+		 * @return un booléen vraie si les coordonnées du point this est inférieur aux coordonnées du point entré en paramètre
+		*/
+		bool operator>( const point & p2) const{
+			if(x == p2.x)
+                return y>p2.y;
             else
-                  return x>p2.x;
-      }
+                return x>p2.x;
+		}
 
-
-      bool operator==( const point & p2) const {
-         return (x == p2.x && y == p2.y);
-      }
+		/**
+		 * @brief redéfinition de l'operator égalité en fonction de la valeur de x et de y
+		 * @param point p2, le point qui sera comparé à this
+		 * @return un booléen à vraie si les coordonnées x et y des deux points sont égaux, faux sinon
+		*/
+		bool operator==( const point & p2) const {
+			return (x == p2.x && y == p2.y);
+		}
 };
 
 #endif // __point_HPP__

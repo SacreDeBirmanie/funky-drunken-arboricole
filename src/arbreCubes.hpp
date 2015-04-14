@@ -130,10 +130,10 @@ class arbrecubes
 	/**
        * @brief insere un noeud comme fils d'un autre noeud (ne supprime pas l'ancien Pere si jamais le noeud était déjà present) 
        * @param pere, un pointeur sur un noeud
-       * @param fils, un pointeur sur un noeud 
+       * @param fils, un pointeur sur un noeud
+       * @pre le noeud à ajouter comme fils ne doit pas être déjà le frere ou le fils d'un autre noeud dans l'arbre
        */	
     void insertion(_noeud * pere, _noeud * fils);
 };
 
-#include "arbreCubes.cpp"
 #endif // __arbrecubes_HPP__

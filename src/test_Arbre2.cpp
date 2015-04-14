@@ -1,5 +1,5 @@
 #include <iostream>
-#include "arbresCubes.cpp"
+#include "arbreCubes.cpp"
 
 using namespace std;
 
@@ -29,7 +29,6 @@ clock_t chrono;
 **/
 #define TEMPS double(chrono)/CLOCKS_PER_SEC
 
-
 //------------------------------------------------------------------------------
 // Programme principal
 int main()
@@ -38,39 +37,47 @@ int main()
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
 	START;
-	ArbreCube AC("cubes.txt");
+	//String fichier = new String();
+	arbrecubes AC("cubes.txt");
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
-	cout << "LISTAGE DES CUBES" << endl;
+	cout << "LISTAGE DES premier cube posé sur la table" << endl;
 	cout << "------------" << endl;
 	START;
-		Vector<cube> liste = AC.dessus(AC.table());
+		vector<cube> liste = AC.dessus(AC.table());
+		vector<cube>::iterator it = liste.begin();
+		
+		for(it;it != liste.end(); it++)
+			cout<<" coordonnée :"<<(*it).centre().x<<","<<(*it).centre().y
+								<<"||"<<(*it).cote()<<endl;
+		 
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
-	cout << "AFFICHAGE DE LA LISTE DES CUBES" << endl;
+	cout << "AFFICHAGE DE TOUS LES CUBES" << endl;
 	cout << "------------" << endl;
 	START;
-	for (auto c : liste )
-	{
-		cout << "centre : " << c.centre() << endl;
-		cout << "cote : " << c.cote() << endl;
-	}
+		//afficherTousLesCubes();
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
 	cout << "SOUTIEN" << endl;
 	cout << "------------" << endl;
 	START;
-	AC.soutien(liste[1]);
+		cube soutien = AC.soutien(liste[1]);
+		cout<<" le cube soutenant ["<<liste[1].centre().x<<","<<liste[1].centre().y
+								<<"||"<<liste[1].cote()<<"]"<< "est :"<<endl;
+		cout<<"["<<soutien.centre().x<<","<<soutien.centre().y
+								<<"||"<<soutien.cote()<<"]"<<endl;
+		
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
 	cout << "AJOUTER" << endl;
 	cout << "------------" << endl;
 	START;
-	AC.ajouter(liste[1]);
+		AC.ajouter(liste[1]);
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
