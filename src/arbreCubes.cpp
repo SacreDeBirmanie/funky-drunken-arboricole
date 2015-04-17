@@ -58,8 +58,7 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     courant = courant->fils ;
         
     while(courant !=NULL){
-		cout<<"on push :"<<courant->bloc.centre().x<<","<<courant->bloc.centre().y
-								<<"||"<<courant->bloc.cote()<<endl;
+		cout<<"on push :"<<courant->bloc.centre().x<<","<<courant->bloc.centre().y <<"||"<<courant->bloc.cote()<<endl;
         cubes.push_back(courant->bloc);
         courant = courant->frere;
     }

@@ -38,7 +38,6 @@ int main()
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
 	START;
-	//String fichier = new String();
 	arbrecubes AC("cubes.txt");
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
@@ -46,41 +45,32 @@ int main()
 	cout << "LISTAGE DES premier cube posé sur la table" << endl;
 	cout << "------------" << endl;
 	START;
-		vector<cube> liste = AC.dessus(AC.table());
-		vector<cube>::iterator it = liste.begin();
-		
-		for(it;it != liste.end(); it++)
-			cout<<" coordonnée :"<<(*it).centre().x<<","<<(*it).centre().y
-								<<"||"<<(*it).cote()<<endl;
+	vector<cube> liste = AC.dessus(AC.table());
+	vector<cube>::iterator it = liste.begin();
+	for ( int i = 0; i < 100; i++ ){
+		AC.dessus(AC.table());
+	}
+	for(it;it != liste.end(); it++)
+		cout<<" coordonnée :"<<(*it).centre().x<<","<<(*it).centre().y <<"||"<<(*it).cote()<<endl;
 		 
-	STOP;
-	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
-	
-	cout << "AFFICHAGE DE TOUS LES CUBES" << endl;
-	cout << "------------" << endl;
-	START;
-		//afficherTousLesCubes();
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
 	cout << "SOUTIEN" << endl;
 	cout << "------------" << endl;
 	START;
-		cube soutien = AC.soutien(liste[1]);
-		cout<<" le cube soutenant ["<<liste[1].centre().x<<","<<liste[1].centre().y
-								<<"||"<<liste[1].cote()<<"]"<< "est :"<<endl;
-		cout<<"["<<soutien.centre().x<<","<<soutien.centre().y
-								<<"||"<<soutien.cote()<<"]"<<endl;
-		
+	cube soutien = AC.soutien(liste[1]);
+	cout<<" le cube soutenant ["<<liste[1].centre().x<<","<<liste[1].centre().y <<"||"<<liste[1].cote()<<"]"<< "est :"<<endl;
+	cout<<"["<<soutien.centre().x<<","<<soutien.centre().y <<"||"<<soutien.cote()<<"]"<<endl;	
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
 	cout << "AJOUTER" << endl;
 	cout << "------------" << endl;
 	START;
-		AC.ajouter(liste[1]);
+	AC.ajouter(liste[1]);
 	STOP;
-	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
+	cout << ">>> Temps : " << TEMPS<< "s" << endl << endl;
 	
 	cout << "SUPPRIMER" << endl;
 	cout << "------------" << endl;

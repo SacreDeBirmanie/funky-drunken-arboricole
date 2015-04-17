@@ -28,11 +28,12 @@ class arbrecubes
 	           _noeud * fils;    // la tête de la liste des cubes posés dessus
 	           _noeud * frere;   // la suite de la liste des cubes posés sur le même père
 	        };
-	            // attribut : pointeur vers le sommet de l'arbre (la table)
+	     // attribut : pointeur vers le sommet de l'arbre (la table)
 	     _noeud * _racine;
 	     	     
    public:
-            // méthodes
+      // méthodes
+
       /**
        * @brief Constructeur, crée un arbre avec les cubes donnés dans un fichier
        * @param nomfic Le nom du fichier texte
