@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "arbreCubes.cpp"
 
 using namespace std;

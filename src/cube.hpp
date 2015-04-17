@@ -20,9 +20,9 @@ class cube
 {   private:             // attributs : centre et distance du centre aux faces
               point milieu; int demiCote;		
 	public:
-	                    // méthodes
+	        // méthodes
 		/**
-			* @brief Constructeur par défaut
+		 @brief Constructeur par défaut
 		*/
 	    cube(){ 
 	        point dede(0,0);
@@ -31,21 +31,21 @@ class cube
 	    };
 	    
 		/**
-			* @brief Constructeur 
-			* @param c le centre du cube
-			* @param cote la longueur d'une arête (supposée impaire)
+		* @brief Constructeur 
+		* @param c le centre du cube
+		* @param cote la longueur d'une arête (supposée impaire)
 		*/        
 		cube(point c,int cote){milieu=c;demiCote=cote/2;}
 		
 		/**
-			* @brief Accès au centre du cube
-			* @return le point au centre du cube 
+		* @brief Accès au centre du cube
+		* @return le point au centre du cube 
 		*/
 		const point centre() const {return milieu;}
 		
 		/**
-			* @brief Accès à la dimension du cube
-			* @return la longueur d'une arête 
+		* @brief Accès à la dimension du cube
+		* @return la longueur d'une arête 
 		*/
 		int cote() const {return 2*demiCote+1;}
 		
