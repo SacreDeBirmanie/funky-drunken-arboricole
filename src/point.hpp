@@ -1,6 +1,6 @@
 /**
  * @file point.hpp
- * @author D.Robbes
+ * @author Sebastien VALLEE && Kevin GONNORD
  * @since 01/05/2015
  * @brief Définition d'une classe points
  *
@@ -10,8 +10,8 @@
 #define __point_HPP__
 
 /**
- * @class point 
- * 
+ * @class point
+ *
  * @brief Classe implémentant un point du plan à coordonnées entières
  *
  */
@@ -31,13 +31,13 @@ class point
 	point(){x=0;y=0;}
 
 	/**
-	* @brief Constructeur 
+	* @brief Constructeur
 	* @param x l'abscisse
 	* @param y l'ordonnée
 	*/
 	point(int x,int y)
 		{this->x=x;this->y=y;}
-		
+
 	/**
 	 * @brief redéfinition de l'operator inferieur en fonction de la valeur de x, ou de la valeur de y si les x des deux points sont égaux
 	 * @param point p2, le point qui sera comparé à this

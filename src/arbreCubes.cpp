@@ -7,13 +7,13 @@
 
 /**
  * @file arbreCubes.cpp
- * @author D.Robbes
+ * @author Sebastien VALLEE && Kevin GONNORD
  * @since 01/05/2015
  * @brief implémentation des méthodes de la classe arbrecubes
  *
 **/
 
-#include "arbreCubes.hpp" 
+#include "arbreCubes.hpp"
  using namespace std;
 
 /**
@@ -27,7 +27,7 @@ arbrecubes::arbrecubes(std::string nomfic){
     string ligne;
     getline(fic,ligne);
     while(!fic.eof())
-    {    
+    {
 		cout <<"   "<< "j'ai lu " << ligne << endl;
         stringstream ss(ligne);
         int x,y,largeur;
@@ -43,10 +43,10 @@ arbrecubes::arbrecubes(std::string nomfic){
     * @brief Donne la liste des cubes directement supportés par le paramètre
     * @param CC un cube supposé présent dans l'arbre
     * @return un vecteur de cubes ayant tous CC comme père
-*/	
-std::vector<cube> arbrecubes::dessus(const cube & CC) const { 
+*/
+std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     // à compléter
-    // 
+    //
     // etape 1 : retrouver le cube
 
 
@@ -54,9 +54,9 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
 
 
     //etape 2 : créer le vecteur
-    std::vector<cube> cubes; 
+    std::vector<cube> cubes;
     courant = courant->fils ;
-        
+
     while(courant !=NULL){
 		cout<<"on push :"<<courant->bloc.centre().x<<","<<courant->bloc.centre().y <<"||"<<courant->bloc.cote()<<endl;
         cubes.push_back(courant->bloc);
@@ -70,8 +70,8 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     * @brief Donne le cube sur lequel est empilé le paramètre
     * @param CC un cube supposé présent dans l'arbre
     * @return le cube père de CC
-*/	
-const cube arbrecubes::soutien(const cube & CC) const { 
+*/
+const cube arbrecubes::soutien(const cube & CC) const {
     // à compléter
     _noeud * soutien = recherche(CC,true);
     return soutien->bloc;
@@ -106,11 +106,11 @@ const cube arbrecubes::soutien(const cube & CC) const {
 
 /**
     * @brief ajoute un cube dans l'arbre, à sa place
-    * @param CC un cube à ajouter 
+    * @param CC un cube à ajouter
     * ajoute CC dans la liste des fils du plus petit cube qui peut le supporter
-    *    ( dans l'ordre ) 
+    *    ( dans l'ordre )
     * et prend comme fils tous les cubes qu'il peut supporter
-*/	
+*/
 void arbrecubes::ajouter(const cube & CC){ //probleme ?
     // à compléter
     _noeud * newneuneu = new _noeud();
@@ -153,11 +153,11 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
 /**
     * @brief supprime un cube de l'arbre
     * @param CC un cube supposé présent dans l'arbre (sauf la table)
-    * 
+    *
     * supprime CC de la liste des fils de son père
     * et transmet ses fils à son père
-*/		
-void arbrecubes::supprimer(const cube & CC){ 
+*/
+void arbrecubes::supprimer(const cube & CC){
     _noeud * pere = recherche(CC,true);
     _noeud * frereGauche = NULL;
     _noeud * courant = pere->fils;
@@ -186,10 +186,10 @@ void arbrecubes::supprimer(const cube & CC){
 
 
 /**
-    * @brief Donne le cube empilé le plus haut dont la projection au sol contient M 
+    * @brief Donne le cube empilé le plus haut dont la projection au sol contient M
     * @param M un point (du plan)
     * @return un cube tel que M ne soit pas plus loin de centre() que cote()/2
-*/	
+*/
 const cube arbrecubes::cubede(const point & M) const {
     //a completer
     //arbre supposé non vide
@@ -208,11 +208,11 @@ const cube arbrecubes::cubede(const point & M) const {
 }
 
 /**
-    * @brief Donne l'altitude de la face supérieure du cubede(M) 
+    * @brief Donne l'altitude de la face supérieure du cubede(M)
     * @param M un point (du plan)
-    * @return une altitude entière (somme des cote() des cubes empilés sous M) 
-*/	    
-int arbrecubes::hauteur(const point & M) const { 
+    * @return une altitude entière (somme des cote() des cubes empilés sous M)
+*/
+int arbrecubes::hauteur(const point & M) const {
     // à compléter
     //arbre supposé non vide
     _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
@@ -229,12 +229,12 @@ int arbrecubes::hauteur(const point & M) const {
             courant = courant->frere;
     }
     return hauteur;
-        
+
 }
 
 /**
     * @brief recherche d'un pointeur sur _noeud contenant le cube supposé present dans l'arbre, la methode retourne soit son pere, soit directement le _noeud
-    * @param CC un cube supposé présent dans l'arbre 
+    * @param CC un cube supposé présent dans l'arbre
     * @param booleen retourPere, un booleen indiquand à la fonction si elle doit retourner le pere du _noeud* contenant le cube (true) ou directement le _noeud contenant CC (faux par defaut)
     * @return un pointeur sur un noeud
 */
@@ -259,14 +259,14 @@ arbrecubes::_noeud* arbrecubes::recherche(const cube & CC, bool retourPere) cons
         return pere;
     else
         return courant;
-        
+
 }
 
 /**
     * @brief permet de savoir si un cube peut supporter un autre cube, en fonction de leur taille et de leur position
     * @param C1, un cube quelconque
     * @param C2, un deuxieme cube quelconque
-    * @return un booleen à vrai si C1 peut supporter C2, faux sinon 
+    * @return un booleen à vrai si C1 peut supporter C2, faux sinon
 */
 bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ) const{
 	if(C1.cote()>C2.cote()){
@@ -280,7 +280,7 @@ bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ) const{
 		else
 			return false;
 	}
-	else 
+	else
 		return false;
 }
 
@@ -288,7 +288,7 @@ bool arbrecubes::peutSupp(const cube & C1, const cube & C2 ) const{
     * @brief permet de savoir si un cube peut supporter un point, en fonction de leur position
     * @param C1, un cube quelconque
     * @param M, un point quelconque
-    * @return un booleen à vrai si C1 peut supporter le point, faux sinon 
+    * @return un booleen à vrai si C1 peut supporter le point, faux sinon
 */
 bool arbrecubes::peutSupp(const cube & C1, const point & M ) const{
     int limiteSupY(C1.centre().y + (C1.cote()-1)/2);
@@ -303,13 +303,13 @@ bool arbrecubes::peutSupp(const cube & C1, const point & M ) const{
 }
 
 /**
-    * @brief insere une liste de vector de _noeud (supposé preent dans l'arbre), les supprime de leur ancien pere, et les ajoutes fils du nouveau pere 
+    * @brief insere une liste de vector de _noeud (supposé preent dans l'arbre), les supprime de leur ancien pere, et les ajoutes fils du nouveau pere
     * @param ancienPere, un pointeur sur un noeud
     * @param nouveauPere, un pointeur sur un noeud
     * @param vecteur contenant une liste de noeud *
     * @pre le vecteur doit être trié dans l'ordre des x, y
     * @pre tous les noeuds du vecteur doivent être un fils de l'ancien Pere
-*/ 
+*/
 void arbrecubes::insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud*> fils){
     vector<_noeud*>::iterator it = fils.begin();
     _noeud * prec = NULL;
@@ -339,10 +339,10 @@ void arbrecubes::insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, st
 }
 
 /**
-    * @brief insere un noeud comme fils d'un autre noeud (ne supprime pas l'ancien Pere si jamais le noeud était déjà present) 
+    * @brief insere un noeud comme fils d'un autre noeud (ne supprime pas l'ancien Pere si jamais le noeud était déjà present)
     * @param pere, un pointeur sur un noeud
     * @param fils, un pointeur sur un noeud
-    * @pre le noeud à ajouter comme fils ne doit pas être déjà le frere ou le fils d'un autre noeud dans l'arbre 
+    * @pre le noeud à ajouter comme fils ne doit pas être déjà le frere ou le fils d'un autre noeud dans l'arbre
 */
 void arbrecubes::insertion(_noeud * pere, _noeud * fils){
 
