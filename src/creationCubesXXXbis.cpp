@@ -21,11 +21,13 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////
 ofstream sortie;//fichier de sortie
 
-int TAILLE = 3;// nombre d'étage de l'empilement des cubes
+int TAILLE = 1;// nombre d'étage de l'empilement des cubes
 int MAXFILS = 9; //nombre total de cube posé sur chacun des blocs
 int TAILLEDEPART = 6;//taille des plus petits cubes
 int ECART = 3;//valeur de tous les ecarts entre les cubes sauf 1
-int DERNIERECART = ECART + ((int)((sqrt(MAXFILS) *5 + (sqrt(MAXFILS)+1)*ECART))%2); // valeur du dernier ECART pour avoir une taille paire 
+
+int BLOCPARLIGNE;//nombrede bloc par ligne
+int DERNIERECART; // valeur du dernier ECART pour avoir une taille paire 
 
 struct base{
 	int x;
@@ -64,10 +66,14 @@ int valeurAbs(int nb){
 		return -nb;
 }
 
+int puissanceSuperieur(int nombre){
+	return 0;
+}
+
 bool verification(char* chaine){
 	bool valeur = true;
 	int i = 0;
-	while (chaine[i] != '/0'){
+	while (chaine[i] != '\0'){
 		if(!isdigit(chaine[i]))
 			valeur = false;
 		i++;
@@ -79,31 +85,35 @@ bool verification(char* chaine){
 
 int calculDeLaBase(int numeroEtage){
 	int resultat = TAILLEDEPART;
-	for(int i = TAILLE; i>numeroEtage ; ++i){
-		resultat = ECART*(sqrt(MAXFILS)) + (resultat * sqrt(MAXFILS)+1) + DERNIERECART;
+	for(int i = TAILLE; i>numeroEtage ; --i){
+		resultat = ECART*(BLOCPARLIGNE) + (resultat * BLOCPARLIGNE) + DERNIERECART;
 	}
+	cout<<resultat<<"::"<<numeroEtage<<endl;
 	return resultat;
 
 }
  
 int creationFILS(int etage, base laBase){
-		int bornex = laBase.x - laBase.cote;
-		int borney = laBase.y - laBase.cote;
+		int bornex = laBase.x - laBase.cote/2;
+		int borney = laBase.y - laBase.cote/2;
 
-		int ecartx = 3;
-		int ecarty = 3;
+		int ecartx = ECART;
+		int ecarty = ECART;
 
 	assert(etage<=TAILLE);
-
-	for(int i =0 ; i<MAXFILS ; ++i){
-		base cube = {bornex + ecartx, borney + ecarty, calculDeLaBase(etage)};
+	int tailleCubeCourant = calculDeLaBase(etage);
+	for(int i =1 ; i<=MAXFILS ; ++i){
+		base cube = {bornex + ecartx + tailleCubeCourant/2 , borney + ecarty + tailleCubeCourant/2, tailleCubeCourant};
 
 		ecrire(cube.x,cube.y , cube.cote);
 
-		ecartx = ecartx + cube.cote + ECART;
-
-		if(i%(int)sqrt(MAXFILS) == 0)
+		if((i%BLOCPARLIGNE) == 0){
+			cout<<"x re"<<endl;
 			ecarty = ecarty + ECART;
+			ecartx = ECART;
+		}
+		else
+			ecartx = ecartx + cube.cote + ECART;
 
 		if(etage!=TAILLE)
 			creationFILS(etage+1,cube);
@@ -121,38 +131,50 @@ int creationFILS(int etage, base laBase){
 //*********************************PROGRAMME PRINCIPAL*********************************//
 /////////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char* argv[]) {
-	string fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
 
 	char ch;
 	int nb = 1;
-	ifstream fichier("cubes.txt", ios::out);
-	
+	bool nouvelleSortie = false;
+	string fdout;
 	while (nb < argc) {
-		ch = (argv[nb])[0];
+		cout<<(argv[nb])<<endl;
+		ch = (argv[nb])[1]; // ne prend que la lettre aprèsle tiret
+		cout<<"nb arg = "<<argc <<endl;
 		if(nb+1 != argc)
 			switch(ch) {
 				case 't' :
-					if(verification(argv[nb+1]))
+					if(verification(argv[nb+1])){
+						cout<<"taille enregistre"<<endl;
 						TAILLE = atoi(argv[nb+1]);
-					else
-						exit(EXIT_FAILURE);
+						break;
+					}
+					/*else
+						exit(EXIT_FAILURE);*/
 				case 'o' :
 					fdout = argv[nb+1];
+					nouvelleSortie = true;
+					break;
 				case 'f' :
-					if(verification(argv[nb+1]))
+					if(verification(argv[nb+1])){
 						MAXFILS = atoi(argv[nb+1]);
-					else
-						exit(EXIT_FAILURE);
+						break;
+					}
+					/*else
+						exit(EXIT_FAILURE);*/
 				case 'd' :
-					if(verification(argv[nb+1]))
+					if(verification(argv[nb+1])){
 						TAILLEDEPART = atoi(argv[nb+1]);
-					else
-						exit(EXIT_FAILURE);
+						break;
+					}
+					/*else
+						exit(EXIT_FAILURE);*/
 				case 'e' :
-					if(verification(argv[nb+1]))
+					if(verification(argv[nb+1])){
 						ECART = atoi(argv[nb+1]);
-					else
-						exit(EXIT_FAILURE);
+						break;
+					}
+					/*else
+						exit(EXIT_FAILURE);*/
 				case 'h' :
 		      		cout<<usage<<endl<<help<<endl;
 		      		exit(EXIT_SUCCESS);
@@ -168,19 +190,25 @@ int main(int argc, char* argv[]) {
 			perror("NOMBRE D'ARGUMENTS INVALIDES \n");
 			exit(EXIT_FAILURE);
 		}
+		nb = nb +2;
 	}
 
+	if(!nouvelleSortie)
+		fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
+	BLOCPARLIGNE = (int)ceil(sqrt(MAXFILS));
+	DERNIERECART = 4 - (ECART*BLOCPARLIGNE)%2;
+
 	sortie.open(fdout.c_str());
+	cout<<"creation du fichier"<<endl;
 	
 	if(sortie){
 		int BASETABLE = calculDeLaBase(0);
 		base table = {0,0,BASETABLE};
-		for(int numero = 1; numero<=(MAXFILS) ; ++numero){
 			creationFILS(1,table);
-		}
 		//melanger les lignes
-		ecrire(table.x,table.y,table.cote);
-		
+		sortie.seekp(0, ios::beg);
+		sortie<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
+		cout<<"fichier crée"<<endl;
 		sortie.close();
 	}
 	else
