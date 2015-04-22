@@ -1,14 +1,14 @@
-#include "arbreCubes.hpp"
+#include "arbreCubes.cpp"
 #include <iostream>
 
 using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	arbrecubes * monarbre = new arbrecubes("cubes.txt");
+	arbrecubes * monarbre = new arbrecubes("cubes9_2.txt");
 
 	point pointT(0,0);
-	cube table(pointT,201);
+	cube table(pointT,102);
 
 	point point5(18,18);
 	cube cube5(point5,5);
@@ -22,7 +22,7 @@ int main(int argc, char const *argv[])
 
 	vector<cube> poserT = monarbre->dessus(table);
 
-	vector<cube>::iterator it =poserT.begin();
+	/*vector<cube>::iterator it =poserT.begin();
 	
 	for(it ;it != poserT.end();it++)
 		cout<<"est soutenu :"<<(*it).cote()<< "=>"<<(*it).centre().x<<","<<(*it).centre().y<<endl;
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
 	cout<<"soutien 70 :"<<soutien70.centre().x<<endl;
 
 	cube soutien5bis = monarbre->soutien(cube5bis);
-	cout<<"soutien 5bis :"<<soutien5bis.centre().x<<endl;
+	cout<<"soutien 5bis :"<<soutien5bis.centre().x<<endl;*/
 
 
 	

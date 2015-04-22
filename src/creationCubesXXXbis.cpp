@@ -19,7 +19,8 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////****DELCARATION DES VARIABLES GLOBALES****///////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-ofstream sortie;//fichier de sortie
+ifstream sortieLecture;//fichier de sortieEcriture ouvert en Lecture
+ofstream sortieEcriture;//fichier de sortieEcriture ouvert en écriture
 
 int TAILLE = 1;// nombre d'étage de l'empilement des cubes
 int MAXFILS = 9; //nombre total de cube posé sur chacun des blocs
@@ -41,7 +42,7 @@ char help[]  = "Parametres :\n"
   "-f MAXFILS: indique le nombre de fils de chaque cube (doit avoir une racine carrée entière, 9 par default)\n"
   "-d TAILLEDEPART: indique la taille de départ des plus petits blocs (doit être divisible par deux)\n"
   "-e ECART: indique l'ecart entre chaque bloc (3 par default)\n"
-  "-o output: la sortie du fichier \n"
+  "-o output: la sortieEcriture du fichier \n"
   "-h help  : cette aide." ;
 
   //////////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +57,7 @@ char help[]  = "Parametres :\n"
 void ecrire(int x, int y, int taille){
 	string bloc = to_string(x)+" "+ to_string(y)+" "+to_string(taille);
 	
-	sortie<<bloc<<endl;
+	sortieEcriture<<bloc<<endl;
 }
 
 int valeurAbs(int nb){
@@ -119,6 +120,42 @@ int creationFILS(int etage, base laBase){
 			creationFILS(etage+1,cube);
 	}
 }
+
+/*void echange(int l1, int l2){
+	string ligne1;
+	int pos1;
+	string ligne2;
+	int pos2;
+
+	bool l1trouve = false;
+	bool l2trouve = false;
+
+	int i = 0;
+	string tmp;
+
+	while (getline(sortieLecture,tmp) && (!l1trouve || !l2trouve) ){
+		i++;
+		if(i == ligne1){
+			ligne1 = tmp;
+			pos1 = sortieLecture.tellg();
+			l1trouve = true;
+		}
+		else if(i == ligne2){
+			ligne2 = tmp;
+			l2trouve = true;
+		}
+
+	}
+}
+void melange(){
+	int j,i;
+
+	for(i=pow(MAXFILS,TAILLE); i>0; i--)
+	{
+		j = rand()%i; // retourne un nombre 0 <= j <= i
+		echange(i, j);
+	}
+}*/
 
 //////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////FIN DES FONCTIONS GLOBALES/////////////////////////////////////
@@ -198,18 +235,23 @@ int main(int argc, char* argv[]) {
 	BLOCPARLIGNE = (int)ceil(sqrt(MAXFILS));
 	DERNIERECART = 4 - (ECART*BLOCPARLIGNE)%2;
 
-	sortie.open(fdout.c_str());
+	sortieLecture.open(fdout.c_str());
+	sortieEcriture.open(fdout.c_str());
 	cout<<"creation du fichier"<<endl;
 	
-	if(sortie){
+	if(sortieEcriture){
 		int BASETABLE = calculDeLaBase(0);
 		base table = {0,0,BASETABLE};
-			creationFILS(1,table);
-		//melanger les lignes
-		sortie.seekp(0, ios::beg);
-		sortie<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
+		ecrire(table.x,table.y,table.cote);
+		creationFILS(1,table);
+		cout<<"l'Arbre a été crée"<<endl;
+
+		cout<<"debut du mélange du fichier"<<endl;
+		//melange();
+		//sortieEcriture.seekp(0, ios::beg);
+		//sortieEcriture<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
 		cout<<"fichier crée"<<endl;
-		sortie.close();
+		sortieEcriture.close();
 	}
 	else
 		cerr<<"Impossible d'ouvrir et de modifier le fichier !" << endl;

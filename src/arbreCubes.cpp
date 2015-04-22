@@ -45,11 +45,6 @@ arbrecubes::arbrecubes(std::string nomfic){
     * @return un vecteur de cubes ayant tous CC comme père
 */
 std::vector<cube> arbrecubes::dessus(const cube & CC) const {
-    // à compléter
-    //
-    // etape 1 : retrouver le cube
-
-
     _noeud * courant = recherche(CC);
 
 
@@ -58,11 +53,9 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     courant = courant->fils ;
 
     while(courant !=NULL){
-		cout<<"on push :"<<courant->bloc.centre().x<<","<<courant->bloc.centre().y <<"||"<<courant->bloc.cote()<<endl;
         cubes.push_back(courant->bloc);
         courant = courant->frere;
     }
-    cout<<"*****"<<endl;
     return cubes;
 }
 
@@ -76,32 +69,6 @@ const cube arbrecubes::soutien(const cube & CC) const {
     _noeud * soutien = recherche(CC,true);
     return soutien->bloc;
 
-
-       /* if(_racine->bloc == CC)
-          return CC;
-      else{
-
-          _noeud * pere = _racine;
-          _noeud * courant = _racine->fils;
-          bool trouve = false;
-          while(!trouve){
-
-            if(courant->bloc == CC)
-              trouve = true;
-
-          else{
-              if(peutSupp(courant->bloc, CC)){
-                pere = courant
-                courant = courant->fils;
-            }
-            else
-                courant = courant->frere;
-        }
-
-       }
-        return pere->bloc;
-      }*/
-
 }
 
 /**
@@ -112,7 +79,6 @@ const cube arbrecubes::soutien(const cube & CC) const {
     * et prend comme fils tous les cubes qu'il peut supporter
 */
 void arbrecubes::ajouter(const cube & CC){ //probleme ?
-    // à compléter
     _noeud * newneuneu = new _noeud();
     if(_racine == NULL){
         newneuneu->bloc = CC;
