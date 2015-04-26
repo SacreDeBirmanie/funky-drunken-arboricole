@@ -19,7 +19,6 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////****DELCARATION DES VARIABLES GLOBALES****///////////////////
 //////////////////////////////////////////////////////////////////////////////////////
-ifstream sortieLecture;//fichier de sortieEcriture ouvert en Lecture
 ofstream sortieEcriture;//fichier de sortieEcriture ouvert en écriture
 
 int TAILLE = 3;// nombre d'étage de l'empilement des cubes
@@ -89,7 +88,6 @@ int calculDeLaBase(int numeroEtage){
 	for(int i = TAILLE; i>numeroEtage ; --i){
 		resultat = ECART*(BLOCPARLIGNE) + (resultat * BLOCPARLIGNE) + DERNIERECART;
 	}
-	cout<<resultat<<"::"<<numeroEtage<<endl;
 	return resultat;
 
 }
@@ -103,14 +101,12 @@ int creationFILS(int etage, base laBase){
 
 	assert(etage<=TAILLE);
 	int tailleCubeCourant = calculDeLaBase(etage);
-	cout<<"tailleCubeCourant::"<<tailleCubeCourant<<"bornex::"<<bornex<<"borney::"<<borney<<endl;
 	for(int i =1 ; i<=MAXFILS ; ++i){
 		base cube = {bornex + ecartx + tailleCubeCourant/2 , borney - ecarty - tailleCubeCourant/2, tailleCubeCourant};
 
 		ecrire(cube.x,cube.y , cube.cote+1);
 
 		if((i%BLOCPARLIGNE) == 0){
-			cout<<"x re"<<endl;
 			ecarty = ecarty + cube.cote + ECART;
 			ecartx = ECART;
 		}
@@ -173,11 +169,9 @@ int main(int argc, char* argv[]) {
 	char ch;
 	int nb = 1;
 	bool nouvelleSortie = false;
-	string fdout;
+	string fdout,fdout2;
 	while (nb < argc) {
-		cout<<(argv[nb])<<endl;
-		ch = (argv[nb])[1]; // ne prend que la lettre aprèsle tiret
-		cout<<"nb arg = "<<argc <<endl;
+		ch = (argv[nb])[1]; // ne prend que la lettre après le tiret
 		if(nb+1 != argc)
 			switch(ch) {
 				case 't' :
@@ -189,7 +183,7 @@ int main(int argc, char* argv[]) {
 					/*else
 						exit(EXIT_FAILURE);*/
 				case 'o' :
-					fdout = argv[nb+1];
+					fdout2 = argv[nb+1];
 					nouvelleSortie = true;
 					break;
 				case 'f' :
@@ -232,11 +226,12 @@ int main(int argc, char* argv[]) {
 	}
 
 	if(!nouvelleSortie)
-		fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
+		fdout2 = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
+
+	fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".tmp.txt";
 	BLOCPARLIGNE = (int)ceil(sqrt(MAXFILS));
 	DERNIERECART = 4 - (ECART*BLOCPARLIGNE)%2;
 
-	sortieLecture.open(fdout.c_str());
 	sortieEcriture.open(fdout.c_str());
 	cout<<"creation du fichier"<<endl;
 	
@@ -245,14 +240,19 @@ int main(int argc, char* argv[]) {
 		base table = {0,0,BASETABLE};
 		ecrire(table.x,table.y,table.cote+1);
 		creationFILS(1,table);
+		sortieEcriture.close();
 		cout<<"l'Arbre a été crée"<<endl;
 
 		cout<<"debut du mélange du fichier"<<endl;
-		//melange();
-		//sortieEcriture.seekp(0, ios::beg);
-		//sortieEcriture<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
-		cout<<"fichier crée"<<endl;
-		sortieEcriture.close();
+		//ofstream sortie(fdout2, ios::out);//fichier de sortie ouvert en écriture
+
+		system(("bash melange.sh "+fdout+" "+fdout2).c_str());
+
+		//sortie.open(fdout2);
+		//sortie.seekp(0, ios::beg);
+		//sortie<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
+		//sortie.close();
+		cout<<"melange termine"<<endl;
 	}
 	else
 		cerr<<"Impossible d'ouvrir et de modifier le fichier !" << endl;
