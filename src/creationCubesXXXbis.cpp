@@ -22,7 +22,7 @@ using namespace std;
 ifstream sortieLecture;//fichier de sortieEcriture ouvert en Lecture
 ofstream sortieEcriture;//fichier de sortieEcriture ouvert en écriture
 
-int TAILLE = 1;// nombre d'étage de l'empilement des cubes
+int TAILLE = 3;// nombre d'étage de l'empilement des cubes
 int MAXFILS = 9; //nombre total de cube posé sur chacun des blocs
 int TAILLEDEPART = 6;//taille des plus petits cubes
 int ECART = 3;//valeur de tous les ecarts entre les cubes sauf 1
@@ -96,21 +96,22 @@ int calculDeLaBase(int numeroEtage){
  
 int creationFILS(int etage, base laBase){
 		int bornex = laBase.x - laBase.cote/2;
-		int borney = laBase.y - laBase.cote/2;
+		int borney = laBase.y + laBase.cote/2;
 
 		int ecartx = ECART;
 		int ecarty = ECART;
 
 	assert(etage<=TAILLE);
 	int tailleCubeCourant = calculDeLaBase(etage);
+	cout<<"tailleCubeCourant::"<<tailleCubeCourant<<"bornex::"<<bornex<<"borney::"<<borney<<endl;
 	for(int i =1 ; i<=MAXFILS ; ++i){
-		base cube = {bornex + ecartx + tailleCubeCourant/2 , borney + ecarty + tailleCubeCourant/2, tailleCubeCourant};
+		base cube = {bornex + ecartx + tailleCubeCourant/2 , borney - ecarty - tailleCubeCourant/2, tailleCubeCourant};
 
-		ecrire(cube.x,cube.y , cube.cote);
+		ecrire(cube.x,cube.y , cube.cote+1);
 
 		if((i%BLOCPARLIGNE) == 0){
 			cout<<"x re"<<endl;
-			ecarty = ecarty + ECART;
+			ecarty = ecarty + cube.cote + ECART;
 			ecartx = ECART;
 		}
 		else
@@ -242,7 +243,7 @@ int main(int argc, char* argv[]) {
 	if(sortieEcriture){
 		int BASETABLE = calculDeLaBase(0);
 		base table = {0,0,BASETABLE};
-		ecrire(table.x,table.y,table.cote);
+		ecrire(table.x,table.y,table.cote+1);
 		creationFILS(1,table);
 		cout<<"l'Arbre a été crée"<<endl;
 

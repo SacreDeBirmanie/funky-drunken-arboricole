@@ -46,7 +46,7 @@ arbrecubes::arbrecubes(std::string nomfic){
 */
 std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     _noeud * courant = recherche(CC);
-
+    cout<<"le cube courant est "<<courant->bloc.cote()<<endl;
 
     //etape 2 : créer le vecteur
     std::vector<cube> cubes;
@@ -107,8 +107,18 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
                 courant = courant->frere;
 
         }
-
         newneuneu->bloc = CC;
+        newneuneu->frere = NULL;
+        newneuneu->fils = NULL;
+
+        cout<<pereTempo->bloc.cote()<<"::"<<newneuneu->bloc.cote()<<endl;
+
+        vector<_noeud*>::iterator it =tmp.begin();
+        cout<<"[]"<<endl;
+        for(it ;it != tmp.end();it++)
+            cout<<(*it)->bloc.cote()<< "=>"<<(*it)->bloc.centre().x<<","<<(*it)->bloc.centre().y<<endl;
+        cout<<"]["<<endl;
+
         insertionMultiple(pereTempo, newneuneu, tmp);
         insertion(pereTempo,newneuneu);
 
@@ -128,8 +138,6 @@ void arbrecubes::supprimer(const cube & CC){
     _noeud * frereGauche = NULL;
     _noeud * courant = pere->fils;
 
-    _noeud * tmp;
-
     while(!(courant->bloc == CC)){//pas de condition null vu que le cube est présent
         frereGauche = courant;
         courant = courant->frere;
@@ -144,8 +152,14 @@ void arbrecubes::supprimer(const cube & CC){
     _noeud * filsCourant = courant->fils;
     courant->fils = NULL;//opération non obligatoire
 
-    while(filsCourant !=NULL)
+    _noeud * tmp;
+    while(filsCourant !=NULL){
+        tmp = filsCourant->frere;
+        filsCourant->frere = NULL;
         insertion(pere, filsCourant);
+        filsCourant = tmp;
+    }
+
 
     delete(courant);
 }
@@ -207,9 +221,10 @@ int arbrecubes::hauteur(const point & M) const {
 arbrecubes::_noeud* arbrecubes::recherche(const cube & CC, bool retourPere) const{
     _noeud * pere = NULL;
     _noeud * courant = _racine;
-    bool trouve = false;
-    while(!trouve){
 
+    bool trouve = false;
+
+    while(!trouve){;
         if(courant->bloc == CC)
 			trouve = true;
 
@@ -285,11 +300,12 @@ void arbrecubes::insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, st
         if(courant == (*it)){
             if(prec == NULL){
                 ancienPere->fils = (*it)->frere;
+                (*it)->frere = NULL;
                 courant = ancienPere->fils;
             }
             else{
-                prec->frere = courant->frere;
-                courant->frere = NULL; // assure que le noeud ne soit plus présent
+                prec->frere = (*it)->frere;
+                (*it)->frere = NULL; // assure que le noeud ne soit plus présent
                 courant = prec->frere;//prec ne correspond à aucun it
             }
 
@@ -316,16 +332,21 @@ void arbrecubes::insertion(_noeud * pere, _noeud * fils){
 
     if(courant == NULL)
         pere->fils = fils;
-    else if(courant->bloc.centre() >fils->bloc.centre()){
+    else if(fils->bloc.centre() < courant->bloc.centre()){
         fils->frere = courant;
         pere->fils = fils;
     }
     else{
-        while(courant->frere != NULL && courant->frere->bloc.centre()<fils->bloc.centre() )
-            courant = courant->frere;
+        _noeud * prec = courant;
+        courant = courant->frere;
 
-    fils->frere = courant->frere;
-    courant->frere = fils;
+        while(courant != NULL && courant->bloc.centre()<fils->bloc.centre() ){
+            prec = courant;
+            courant = courant->frere;
+        }
+
+        fils->frere = courant;
+        prec->frere = fils;
 
     }
 }
