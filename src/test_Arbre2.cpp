@@ -38,7 +38,7 @@ int main()
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
 	START;
-	arbrecubes AC("cubes.txt");
+	arbrecubes AC("cubes10_4.txt");
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
@@ -75,7 +75,9 @@ int main()
 	cout << "SUPPRIMER" << endl;
 	cout << "------------" << endl;
 	START;
-	AC.ajouter(liste[1]);
+	for ( int i = 0, i < 1000 ; i++ ) {
+		AC.ajouter(liste[1]);
+	}
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 
