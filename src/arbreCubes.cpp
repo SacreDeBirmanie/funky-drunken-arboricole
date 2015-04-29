@@ -46,9 +46,6 @@ arbrecubes::arbrecubes(std::string nomfic){
 */
 std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     _noeud * courant = recherche(CC);
-<<<<<<< HEAD
-=======
->>>>>>> d41b1ed36d9912e1033bceec29f38aedfaac19dc
 
     //etape 2 : créer le vecteur
     std::vector<cube> cubes;
@@ -111,12 +108,8 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
         newneuneu->frere = NULL;
         newneuneu->fils = NULL;
 
-<<<<<<< HEAD
-=======
-
         vector<_noeud*>::iterator it =tmp.begin();
 
->>>>>>> d41b1ed36d9912e1033bceec29f38aedfaac19dc
         insertionMultiple(pereTempo, newneuneu, tmp);
         insertion(pereTempo,newneuneu);
 
