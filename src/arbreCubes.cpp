@@ -64,8 +64,8 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     * @return le cube père de CC
 */
 const cube arbrecubes::soutien(const cube & CC) const {
-    _noeud * soutien = recherche(CC,true);
-    return soutien->bloc;
+    _noeud * cubeSoutien = recherche(CC,true);
+    return cubeSoutien->bloc;
 
 }
 
@@ -98,7 +98,7 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
             else if(peutSupp(courant->bloc, CC)){
                 pereTempo = courant;
                 courant = courant->fils;
-                std::vector<_noeud*> tmp;//permet d'écraser l'ancien tmp pour repartir de zéro
+                tmp.clear();//permet d'écraser l'ancien tmp pour repartir de zéro
             }
             else 
                 courant = courant->frere;
@@ -185,19 +185,17 @@ const cube arbrecubes::cubede(const point & M) const {
 */
 int arbrecubes::hauteur(const point & M) const {
     //arbre supposé non vide
-    _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
     _noeud * courant = _racine;
-    int hauteur = 0;
+    int sommeHauteur = 0;
     while(courant != NULL){
         if(peutSupp(courant->bloc , M)){
-            hauteur += courant->bloc.cote();
-            pereTempo = courant;
+            sommeHauteur += courant->bloc.cote();
             courant = courant->fils;
         }
         else
             courant = courant->frere;
     }
-    return hauteur;
+    return sommeHauteur;
 
 }
 

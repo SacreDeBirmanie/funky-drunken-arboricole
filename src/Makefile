@@ -1,5 +1,5 @@
 # options de compilation
-CFLAGS = -g -std=c++11 -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
+CFLAGS = -g --std=c++0x -pedantic -Wfatal-errors -Wconversion -Wredundant-decls -Wshadow -Wall -Wextra
 
 all : test_Arbre2.exe
 
