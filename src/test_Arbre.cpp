@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	arbrecubes * monarbre = new arbrecubes("cubes10_5.txt");
+	arbrecubes * monarbre = new arbrecubes("./FichiersTests/cubes10_5.txt");
 
 	cout<<"debut des operations"<<endl;
 	point pointT(0,0);
