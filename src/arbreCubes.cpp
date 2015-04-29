@@ -18,7 +18,7 @@
 
 /**
 	*brief Constructeur, crée un arbre avec les cubes donnés dans un fichier
-    * @param nomfic Le nom du fichier texte
+  	* @param nomfic Le nom du fichier texte
 */
 arbrecubes::arbrecubes(std::string nomfic){
     _racine=NULL;
@@ -28,7 +28,7 @@ arbrecubes::arbrecubes(std::string nomfic){
     getline(fic,ligne);
     while(!fic.eof())
     {
-		cout <<"   "<< "j'ai lu " << ligne << endl;
+	//cout <<"   "<< "j'ai lu " << ligne << endl;
         stringstream ss(ligne);
         int x,y,largeur;
         ss >> x >> y >> largeur;
@@ -46,7 +46,7 @@ arbrecubes::arbrecubes(std::string nomfic){
 */
 std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     _noeud * courant = recherche(CC);
-    cout<<"le cube courant est "<<courant->bloc.cote()<<endl;
+    //cout<<"le cube courant est "<<courant->bloc.cote()<<endl;
 
     //etape 2 : créer le vecteur
     std::vector<cube> cubes;
@@ -114,10 +114,10 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
         cout<<pereTempo->bloc.cote()<<"::"<<newneuneu->bloc.cote()<<endl;
 
         vector<_noeud*>::iterator it =tmp.begin();
-        cout<<"[]"<<endl;
+        /*cout<<"[]"<<endl;
         for(it ;it != tmp.end();it++)
             cout<<(*it)->bloc.cote()<< "=>"<<(*it)->bloc.centre().x<<","<<(*it)->bloc.centre().y<<endl;
-        cout<<"]["<<endl;
+        cout<<"]["<<endl;*/
 
         insertionMultiple(pereTempo, newneuneu, tmp);
         insertion(pereTempo,newneuneu);

@@ -34,11 +34,12 @@ clock_t chrono;
 // Programme principal
 int main()
 {
+	nomfic = "cubes10_4.txt"
 
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
 	START;
-	arbrecubes AC("cubes10_4.txt");
+	arbrecubes AC(nomfic);
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
 	
@@ -72,14 +73,31 @@ int main()
 	STOP;
 	cout << ">>> Temps : " << TEMPS<< "s" << endl << endl;
 	
+	temps2 = 0;
+	cpt = 0;
+	ifstream fic(nomfic.c_str());
+   	assert(fic.is_open());
+    	string ligne;
+    	getline(fic,ligne);
+	while(!fic.eof() && cpt < 1000)
+    	{
+        stringstream ss(ligne);
+        int x,y,largeur;
+        ss >> x >> y >> largeur;
+        point P(x,y);
+        cube CC(P,largeur);
 	cout << "SUPPRIMER" << endl;
 	cout << "------------" << endl;
 	START;
-	for ( int i = 0, i < 1000 ; i++ ) {
-		AC.ajouter(liste[1]);
-	}
+	AC.supprimer(CC);
+	temps2 = temps2 + TEMPS;
 	STOP;
-	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
+	cout << ">>> Temps : " << temps2<< "s" << endl << endl;         
+	getline(fic,ligne);
+	
+	}
+}
+	
 
 	return 0;
 }
