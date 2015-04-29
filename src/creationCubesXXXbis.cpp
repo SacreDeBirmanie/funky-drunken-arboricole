@@ -166,6 +166,7 @@ int main(int argc, char* argv[]) {
 						exit(EXIT_FAILURE);*/
 				case 'o' :
 					fdout2 = argv[nb+1];
+					fdout2 = "./FichiersTests/"+fdout2;
 					nouvelleSortie = true;
 					break;
 				case 'f' :
@@ -210,7 +211,7 @@ int main(int argc, char* argv[]) {
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	if(!nouvelleSortie)//si aucune nouvelle sortie n'a été donnée en argument
-		fdout2 = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
+		fdout2 = "./FichiersTests/cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
 
 	fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".tmp.txt";
 
