@@ -34,7 +34,7 @@ clock_t chrono;
 // Programme principal
 int main()
 {
-	string nomfic = "cubes10_4.txt";
+	string nomfic = "./FichiersTests/cubes10_4.txt";
 
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
