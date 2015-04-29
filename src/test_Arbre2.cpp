@@ -74,8 +74,9 @@ int main()
    	assert(fic.is_open());
     	string ligne;
     	getline(fic,ligne);
-	while(!fic.eof() && cpt < 1)
+	while(!fic.eof() && cpt < 10000)
     	{
+		getline(fic,ligne);
 		stringstream ss(ligne);
 		int x,y,largeur;
 		ss >> x >> y >> largeur;
@@ -86,9 +87,10 @@ int main()
 		STOP;
 		temps2 = temps2 + TEMPS;
 		cpt = cpt + 1;
+		
 	}
 	cout << ">>> Temps : " << temps2<< "s" << endl << endl;         
-		getline(fic,ligne);	
+			
 
 	return 0;
 }
