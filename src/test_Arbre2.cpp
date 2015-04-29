@@ -34,7 +34,7 @@ clock_t chrono;
 // Programme principal
 int main()
 {
-	nomfic = "cubes10_4.txt"
+	string nomfic = "cubes10_4.txt";
 
 	cout << "CONSTRUCTION" << endl;
 	cout << "------------" << endl;
@@ -73,8 +73,8 @@ int main()
 	STOP;
 	cout << ">>> Temps : " << TEMPS<< "s" << endl << endl;
 	
-	temps2 = 0;
-	cpt = 0;
+	double temps2 = 0;
+	int cpt = 0;
 	ifstream fic(nomfic.c_str());
    	assert(fic.is_open());
     	string ligne;
@@ -95,9 +95,7 @@ int main()
 	cout << ">>> Temps : " << temps2<< "s" << endl << endl;         
 	getline(fic,ligne);
 	
-	}
-}
-	
+	}	
 
 	return 0;
 }
