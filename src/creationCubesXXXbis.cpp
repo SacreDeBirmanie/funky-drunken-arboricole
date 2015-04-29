@@ -19,15 +19,16 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////****DELCARATION DES VARIABLES GLOBALES****///////////////////
 //////////////////////////////////////////////////////////////////////////////////////
+///
 ofstream sortieEcriture;//fichier de sortieEcriture ouvert en écriture
 
-int TAILLE = 3;// nombre d'étage de l'empilement des cubes
-int MAXFILS = 9; //nombre total de cube posé sur chacun des blocs
-int TAILLEDEPART = 6;//taille des plus petits cubes
+int TAILLE = 9;// nombre d'étage de l'empilement des cubes
+int MAXFILS = 2; //nombre total de cube posé sur chacun des blocs
+int TAILLEDEPART = 6;//taille des plus petits cubes (ceux empiler au dernier etage)
 int ECART = 3;//valeur de tous les ecarts entre les cubes sauf 1
 
-int BLOCPARLIGNE;//nombrede bloc par ligne
-int DERNIERECART; // valeur du dernier ECART pour avoir une taille paire 
+int BLOCPARLIGNE;//nombre de bloc par ligne
+int DERNIERECART; // valeur du dernier ECART pour avoir une taille paire et ainsi diviser facilement la taille par deux
 
 struct base{
 	int x;
@@ -35,11 +36,11 @@ struct base{
 	int cote;
 };
 
-char usage[] = "creationCubesXXX [-t taille] [-o output] [-h help] [...]" ;
+char usage[] = "creationCubesXXX [-t taille] [] [-o output] [-h help] [...]" ;
 char help[]  = "Parametres :\n"
-  "-t TAILLE: indique la taille du fichier à générer (le fichier fera la taille indiqué puissance 9 par default) \n"
-  "-f MAXFILS: indique le nombre de fils de chaque cube (doit avoir une racine carrée entière, 9 par default)\n"
-  "-d TAILLEDEPART: indique la taille de départ des plus petits blocs (doit être divisible par deux)\n"
+  "-t TAILLE: indique la taille du fichier à générer (le fichier fera la somme de h=0 à TAILLE de 9 puissance h, par default) \n"
+  "-f MAXFILS: indique le nombre de fils de chaque cube ( 9 par default)\n"
+  "-d TAILLEDEPART: indique la taille de départ des plus petits blocs\n"
   "-e ECART: indique l'ecart entre chaque bloc (3 par default)\n"
   "-o output: la sortieEcriture du fichier \n"
   "-h help  : cette aide." ;
@@ -53,23 +54,26 @@ char help[]  = "Parametres :\n"
 //////////////////////////////////////////////////////////////////////////////////////
 //**********************DELCARATION DES FONCTIONS GLOBALES**************************//
 //////////////////////////////////////////////////////////////////////////////////////
+
+
+/**
+    * @brief ecrit sur la sortie fdout les paramètres séparé d'un espace
+    * @param x, un entier x (correspondant à une position x d'un cube)
+    * @param y, un entier y (correspondant à une position y d'un cube)
+    * @param taille, un entier x (correspondant à la taille d'un cube)
+*/
 void ecrire(int x, int y, int taille){
 	string bloc = to_string(x)+" "+ to_string(y)+" "+to_string(taille);
 	
 	sortieEcriture<<bloc<<endl;
 }
 
-int valeurAbs(int nb){
-	if(nb>=0)
-		return nb;
-	else
-		return -nb;
-}
 
-int puissanceSuperieur(int nombre){
-	return 0;
-}
-
+/**
+    * @brief permet de vérifier qu'une chaine de caractère est bien un nombre entier
+    * @param chaine, la chaine de caractère à vérifier
+    * @return un booleen à vrai si la chaine peut être transformer en nombre entier, faux sinon
+*/
 bool verification(char* chaine){
 	bool valeur = true;
 	int i = 0;
@@ -83,6 +87,12 @@ bool verification(char* chaine){
 
 }
 
+
+/**
+    * @brief permet de calculer la taille du cube à une certaine hauteur
+    * @param entier numeroEtage, la hauteur du cube dont la base doit être calculé, en fonction du nombre de fils, des ecarts et de la taille de depart
+    * @return entier resultat, la taille du cube à l'étage passé en paramètre
+*/
 int calculDeLaBase(int numeroEtage){
 	int resultat = TAILLEDEPART;
 	for(int i = TAILLE; i>numeroEtage ; --i){
@@ -91,7 +101,13 @@ int calculDeLaBase(int numeroEtage){
 	return resultat;
 
 }
- 
+
+
+/**
+    * @brief permet de crée recursivement des empilement de bloc
+    * @param entier etage, l'étage du cube
+    * @param base labase, le cube sur lequel seront empilé les blocs de l'étage courant
+*/
 int creationFILS(int etage, base laBase){
 		int bornex = laBase.x - laBase.cote/2;
 		int borney = laBase.y + laBase.cote/2;
@@ -118,42 +134,6 @@ int creationFILS(int etage, base laBase){
 	}
 }
 
-/*void echange(int l1, int l2){
-	string ligne1;
-	int pos1;
-	string ligne2;
-	int pos2;
-
-	bool l1trouve = false;
-	bool l2trouve = false;
-
-	int i = 0;
-	string tmp;
-
-	while (getline(sortieLecture,tmp) && (!l1trouve || !l2trouve) ){
-		i++;
-		if(i == ligne1){
-			ligne1 = tmp;
-			pos1 = sortieLecture.tellg();
-			l1trouve = true;
-		}
-		else if(i == ligne2){
-			ligne2 = tmp;
-			l2trouve = true;
-		}
-
-	}
-}
-void melange(){
-	int j,i;
-
-	for(i=pow(MAXFILS,TAILLE); i>0; i--)
-	{
-		j = rand()%i; // retourne un nombre 0 <= j <= i
-		echange(i, j);
-	}
-}*/
-
 //////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////FIN DES FONCTIONS GLOBALES/////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////
@@ -170,9 +150,11 @@ int main(int argc, char* argv[]) {
 	int nb = 1;
 	bool nouvelleSortie = false;
 	string fdout,fdout2;
+//////////////////recuperation des arguments passés à la fonction////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 	while (nb < argc) {
 		ch = (argv[nb])[1]; // ne prend que la lettre après le tiret
-		if(nb+1 != argc)
+		if(nb+1 != argc || ch =='h')
 			switch(ch) {
 				case 't' :
 					if(verification(argv[nb+1])){
@@ -191,22 +173,22 @@ int main(int argc, char* argv[]) {
 						MAXFILS = atoi(argv[nb+1]);
 						break;
 					}
-					/*else
-						exit(EXIT_FAILURE);*/
 				case 'd' :
 					if(verification(argv[nb+1])){
-						TAILLEDEPART = atoi(argv[nb+1]);
+						int tmp = atoi(argv[nb+1]);
+						if(tmp%2 ==0)
+							TAILLEDEPART =tmp ;
+						else{
+							TAILLEDEPART = tmp+1;
+							cout<<"la taille de départ à été augmenté de 1 pour avoir une taille paire "<<tmp<<"=>"<<TAILLEDEPART<<endl;
+						}
 						break;
 					}
-					/*else
-						exit(EXIT_FAILURE);*/
 				case 'e' :
 					if(verification(argv[nb+1])){
 						ECART = atoi(argv[nb+1]);
 						break;
 					}
-					/*else
-						exit(EXIT_FAILURE);*/
 				case 'h' :
 		      		cout<<usage<<endl<<help<<endl;
 		      		exit(EXIT_SUCCESS);
@@ -224,34 +206,34 @@ int main(int argc, char* argv[]) {
 		}
 		nb = nb +2;
 	}
+//////////////////fin de la recuperation des arguments passés à la fonction////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-	if(!nouvelleSortie)
+	if(!nouvelleSortie)//si aucune nouvelle sortie n'a été donnée en argument
 		fdout2 = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".txt";
 
 	fdout = "cubes"+to_string(MAXFILS)+"_"+to_string(TAILLE)+".tmp.txt";
-	BLOCPARLIGNE = (int)ceil(sqrt(MAXFILS));
-	DERNIERECART = 4 - (ECART*BLOCPARLIGNE)%2;
+
+	BLOCPARLIGNE = (int)ceil(sqrt(MAXFILS));//donne le nombre de bloc max par ligne
+	DERNIERECART = 4 - (ECART*BLOCPARLIGNE)%2;//calcul le dernier ecart
 
 	sortieEcriture.open(fdout.c_str());
 	cout<<"creation du fichier"<<endl;
-	
-	if(sortieEcriture){
+
+//////////////////creation de l'arbre////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+	if(sortieEcriture){//le fichier a bien été ouvert
 		int BASETABLE = calculDeLaBase(0);
 		base table = {0,0,BASETABLE};
-		ecrire(table.x,table.y,table.cote+1);
-		creationFILS(1,table);
-		sortieEcriture.close();
+		ecrire(table.x,table.y,table.cote+1);//on ecrit sur la premiere ligne la table
+		creationFILS(1,table);//on crée récursivement les cubes
+		sortieEcriture.close();//on ferme le fichier puisque tous les bloc ont été ecrits
 		cout<<"l'Arbre a été crée"<<endl;
 
 		cout<<"debut du mélange du fichier"<<endl;
-		//ofstream sortie(fdout2, ios::out);//fichier de sortie ouvert en écriture
 
-		system(("bash melange.sh "+fdout+" "+fdout2).c_str());
+		system(("bash melange.sh "+fdout+" "+fdout2).c_str());//execute le script bash pour melanger les lignes aléatoirement (en gardant la table en premiere ligne)
 
-		//sortie.open(fdout2);
-		//sortie.seekp(0, ios::beg);
-		//sortie<<to_string(table.x)+" "+ to_string(table.y)+" "+to_string(table.cote);
-		//sortie.close();
 		cout<<"melange termine"<<endl;
 	}
 	else

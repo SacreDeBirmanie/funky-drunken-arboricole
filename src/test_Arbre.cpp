@@ -5,7 +5,7 @@ using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	arbrecubes * monarbre = new arbrecubes("cubes9_3.txt");
+	arbrecubes * monarbre = new arbrecubes("cubes10_5.txt");
 
 	cout<<"debut des operations"<<endl;
 	point pointT(0,0);
@@ -23,8 +23,7 @@ int main(int argc, char const *argv[])
 	point point400(-105,0);
 	cube cube400(point400,103);
 
-
-	vector<cube> poserT = monarbre->dessus(table);
+	/*vector<cube> poserT = monarbre->dessus(table);
 
 	vector<cube>::iterator it =poserT.begin();
 	cout<<" la table soutien les cubes :"<<endl;
@@ -44,7 +43,7 @@ int main(int argc, char const *argv[])
 	poserT = monarbre->dessus(cube7);
 
 	it =poserT.begin();
-	cout<<" le cube 5 soutien les cubes :"<<endl;
+	cout<<" le cube 7 soutien les cubes :"<<endl;
 	for(it ;it != poserT.end();it++)
 		cout<<(*it).cote()<< "=>"<<(*it).centre().x<<","<<(*it).centre().y<<endl;
 	cout<<"this is the end"<<endl;
@@ -101,20 +100,18 @@ int main(int argc, char const *argv[])
 		cout<<(*it).cote()<< "=>"<<(*it).centre().x<<","<<(*it).centre().y<<endl;
 	cout<<"this is the end"<<endl;
 
-	point goutte1(-245,-245);
+	point goutte1(-100,-100);
 	point goutte2(0,0);
-
 	cube haha = monarbre->cubede(goutte1);
 	int hihi = monarbre->hauteur(goutte1);
 
 	cout<<haha.cote()<<endl;
 	cout<<hihi<<endl;
-
 	haha = monarbre->cubede(goutte2);
 	hihi = monarbre->hauteur(goutte2);
 
 	cout<<haha.cote()<<endl;
-	cout<<hihi<<endl;
+	cout<<hihi<<endl;*/
 
 
 	

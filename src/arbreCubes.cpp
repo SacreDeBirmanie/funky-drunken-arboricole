@@ -46,7 +46,9 @@ arbrecubes::arbrecubes(std::string nomfic){
 */
 std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     _noeud * courant = recherche(CC);
-    //cout<<"le cube courant est "<<courant->bloc.cote()<<endl;
+<<<<<<< HEAD
+=======
+>>>>>>> d41b1ed36d9912e1033bceec29f38aedfaac19dc
 
     //etape 2 : créer le vecteur
     std::vector<cube> cubes;
@@ -65,7 +67,6 @@ std::vector<cube> arbrecubes::dessus(const cube & CC) const {
     * @return le cube père de CC
 */
 const cube arbrecubes::soutien(const cube & CC) const {
-    // à compléter
     _noeud * soutien = recherche(CC,true);
     return soutien->bloc;
 
@@ -102,8 +103,7 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
                 courant = courant->fils;
                 std::vector<_noeud*> tmp;//permet d'écraser l'ancien tmp pour repartir de zéro
             }
-            //ELSE IF De SORTIE ??
-            else
+            else 
                 courant = courant->frere;
 
         }
@@ -111,14 +111,12 @@ void arbrecubes::ajouter(const cube & CC){ //probleme ?
         newneuneu->frere = NULL;
         newneuneu->fils = NULL;
 
-        cout<<pereTempo->bloc.cote()<<"::"<<newneuneu->bloc.cote()<<endl;
+<<<<<<< HEAD
+=======
 
         vector<_noeud*>::iterator it =tmp.begin();
-        /*cout<<"[]"<<endl;
-        for(it ;it != tmp.end();it++)
-            cout<<(*it)->bloc.cote()<< "=>"<<(*it)->bloc.centre().x<<","<<(*it)->bloc.centre().y<<endl;
-        cout<<"]["<<endl;*/
 
+>>>>>>> d41b1ed36d9912e1033bceec29f38aedfaac19dc
         insertionMultiple(pereTempo, newneuneu, tmp);
         insertion(pereTempo,newneuneu);
 
@@ -169,9 +167,9 @@ void arbrecubes::supprimer(const cube & CC){
     * @brief Donne le cube empilé le plus haut dont la projection au sol contient M
     * @param M un point (du plan)
     * @return un cube tel que M ne soit pas plus loin de centre() que cote()/2
+    * @pre l'arbre de doit pas être vide et posséder au moins la "table"
 */
 const cube arbrecubes::cubede(const point & M) const {
-    //a completer
     //arbre supposé non vide
     _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
     _noeud * courant = _racine;
@@ -180,20 +178,19 @@ const cube arbrecubes::cubede(const point & M) const {
             pereTempo = courant;
             courant = courant->fils;
         }
-        //ELSE IF DE SORTIE pour ne pas parcourir tous les freres??
         else
             courant = courant->frere;
-        }
-        return pereTempo->bloc;
+    }
+    return pereTempo->bloc;
 }
 
 /**
     * @brief Donne l'altitude de la face supérieure du cubede(M)
     * @param M un point (du plan)
     * @return une altitude entière (somme des cote() des cubes empilés sous M)
+    * @pre l'arbre de doit pas être vide et posséder au moins la "table"
 */
 int arbrecubes::hauteur(const point & M) const {
-    // à compléter
     //arbre supposé non vide
     _noeud * pereTempo;//sera toujours egale à racine à la premiere itération de la boucle
     _noeud * courant = _racine;
@@ -204,7 +201,6 @@ int arbrecubes::hauteur(const point & M) const {
             pereTempo = courant;
             courant = courant->fils;
         }
-        //ELSE IF DE SORTIE pour ne pas parcourir tous les freres ??
         else
             courant = courant->frere;
     }
@@ -216,15 +212,16 @@ int arbrecubes::hauteur(const point & M) const {
     * @brief recherche d'un pointeur sur _noeud contenant le cube supposé present dans l'arbre, la methode retourne soit son pere, soit directement le _noeud
     * @param CC un cube supposé présent dans l'arbre
     * @param booleen retourPere, un booleen indiquand à la fonction si elle doit retourner le pere du _noeud* contenant le cube (true) ou directement le _noeud contenant CC (faux par defaut)
-    * @return un pointeur sur un noeud
+    * @return un pointeur sur un noeud correspondant au cube passé en paramètre
+    * @pre CC doit se trouver dans l'arbre à la position qui lui correspond
 */
 arbrecubes::_noeud* arbrecubes::recherche(const cube & CC, bool retourPere) const{
     _noeud * pere = NULL;
     _noeud * courant = _racine;
 
     bool trouve = false;
-
-    while(!trouve){;
+    while(!trouve){
+        assert(courant !=NULL);
         if(courant->bloc == CC)
 			trouve = true;
 
@@ -283,12 +280,13 @@ bool arbrecubes::peutSupp(const cube & C1, const point & M ) const{
       return false;
 }
 
+
 /**
     * @brief insere une liste de vector de _noeud (supposé preent dans l'arbre), les supprime de leur ancien pere, et les ajoutes fils du nouveau pere
     * @param ancienPere, un pointeur sur un noeud
     * @param nouveauPere, un pointeur sur un noeud
     * @param vecteur contenant une liste de noeud *
-    * @pre le vecteur doit être trié dans l'ordre des x, y
+    * @pre le vecteur doit être trié dans l'ordre des x, y,tout comme ceux de l'ancien pere
     * @pre tous les noeuds du vecteur doivent être un fils de l'ancien Pere
 */
 void arbrecubes::insertionMultiple(_noeud * ancienPere, _noeud * nouveauPere, std::vector<_noeud*> fils){
