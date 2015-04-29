@@ -65,37 +65,30 @@ int main()
 	cout<<"["<<soutien.centre().x<<","<<soutien.centre().y <<"||"<<soutien.cote()<<"]"<<endl;	
 	STOP;
 	cout << ">>> Temps : " << TEMPS << "s" << endl << endl;
-	
-	cout << "AJOUTER" << endl;
+
+	cout << "SUPPRIMER" << endl;
 	cout << "------------" << endl;
-	START;
-	AC.ajouter(liste[1]);
-	STOP;
-	cout << ">>> Temps : " << TEMPS<< "s" << endl << endl;
-	
 	double temps2 = 0;
 	int cpt = 0;
 	ifstream fic(nomfic.c_str());
    	assert(fic.is_open());
     	string ligne;
     	getline(fic,ligne);
-	while(!fic.eof() && cpt < 1000)
+	while(!fic.eof() && cpt < 1)
     	{
-        stringstream ss(ligne);
-        int x,y,largeur;
-        ss >> x >> y >> largeur;
-        point P(x,y);
-        cube CC(P,largeur);
-	cout << "SUPPRIMER" << endl;
-	cout << "------------" << endl;
-	START;
-	AC.supprimer(CC);
-	temps2 = temps2 + TEMPS;
-	STOP;
+		stringstream ss(ligne);
+		int x,y,largeur;
+		ss >> x >> y >> largeur;
+		point P(x,y);
+		cube CC(P,largeur);
+		START;
+		AC.supprimer(CC);
+		STOP;
+		temps2 = temps2 + TEMPS;
+		cpt = cpt + 1;
+	}
 	cout << ">>> Temps : " << temps2<< "s" << endl << endl;         
-	getline(fic,ligne);
-	
-	}	
+		getline(fic,ligne);	
 
 	return 0;
 }
